@@ -1,0 +1,39 @@
+<ContentPage
+    x:Class="BMB.Views.CountrySelectionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="CountrySelectionPage"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <VerticalStackLayout Padding="20">
+
+        <Label
+            FontSize="20"
+            HorizontalOptions="Center"
+            Text="Select Countries" />
+
+        <CollectionView ItemsSource="{Binding Countries}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="Auto,*">
+                        <CheckBox IsChecked="{Binding IsSelected}" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding Name}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button
+            BackgroundColor="#0057D9"
+            Command="{Binding SaveCommand}"
+            CornerRadius="8"
+            FontAttributes="Bold"
+            HeightRequest="50"
+            Text="Save"
+            TextColor="White" />
+
+    </VerticalStackLayout>
+</ContentPage>

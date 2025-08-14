@@ -1,0 +1,52 @@
+<ContentPage
+    x:Class="BMB.Views.UsersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Registered Users"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label
+            Grid.Row="0"
+            Margin="0,0,0,15"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="Registered Users" />
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Users}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame
+                        Margin="5"
+                        Padding="10"
+                        BorderColor="LightGray"
+                        CornerRadius="5">
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="{Binding FullName}" />
+                            <Label
+                                FontSize="14"
+                                Text="{Binding Email}"
+                                TextColor="Gray" />
+                            <Label
+                                FontSize="14"
+                                Text="{Binding PhoneNumber}"
+                                TextColor="Gray" />
+                            <Label
+                                FontSize="12"
+                                Text="{Binding CreatedAt, StringFormat='Registered on: {0:MMM dd, yyyy}'}"
+                                TextColor="DarkGray" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

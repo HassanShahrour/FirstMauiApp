@@ -1,0 +1,59 @@
+<ContentPage
+    x:Class="BMB.Views.OrdersCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:BMB.Data.Models"
+    xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+    xmlns:viewmodels="clr-namespace:BMB.ViewModels"
+    Padding="10"
+    x:DataType="viewmodels:OrdersCalendarViewModel"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <ContentPage.Resources>
+        <Style x:Key="OrderCard" TargetType="Frame">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="5,5,5,10" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="BorderColor" Value="#DDE2E5" />
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Spacing="20">
+
+        <scheduler:SfScheduler SelectedDate="{Binding SelectedDate, Mode=TwoWay}" View="Month" />
+
+        <ScrollView>
+            <VerticalStackLayout Spacing="20">
+
+                <Label
+                    Margin="0,20,0,0"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    Text="Orders for Selected Date"
+                    TextColor="#222" />
+
+                <CollectionView ItemsSource="{Binding OrdersForSelectedDate}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Order">
+                            <Frame Style="{StaticResource OrderCard}">
+                                <VerticalStackLayout>
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding Id, StringFormat='Order ID: {0}'}"
+                                        TextColor="#2C3E50" />
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding TotalPrice, StringFormat='Total: ${0:F2}'}"
+                                        TextColor="#27AE60" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

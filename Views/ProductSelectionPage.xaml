@@ -1,0 +1,221 @@
+﻿<ContentPage
+    x:Class="BMB.Views.ProductSelectionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Carousel;assembly=Syncfusion.Maui.Carousel"
+    xmlns:viewmodels="clr-namespace:BMB.ViewModels"
+    x:Name="PageRoot"
+    Title="Choose Items"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
+
+        <!--  Header: Client Name + Date  -->
+        <VerticalStackLayout
+            Grid.Row="0"
+            Margin="0,0,0,20"
+            Spacing="8">
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="{Binding SelectedClient.FullName}"
+                TextColor="{DynamicResource PrimaryTextColor}" />
+            <Label
+                FontSize="14"
+                Text="{Binding SelectedDate, StringFormat='Date: {0:MMMM dd, yyyy}'}"
+                TextColor="#666666" />
+        </VerticalStackLayout>
+
+        <!--  Main scrollable content: Carousel + Selected Products  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20">
+
+                <!--  Product Carousel  -->
+                <syncfusion:SfCarousel
+                    ItemHeight="320"
+                    ItemSpacing="20"
+                    ItemWidth="220"
+                    ItemsSource="{Binding Products}"
+                    ViewMode="Default"
+                    WidthRequest="800">
+                    <syncfusion:SfCarousel.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                Padding="0"
+                                BackgroundColor="#F8F9FA"
+                                Spacing="12">
+
+                                <Image
+                                    Aspect="AspectFill"
+                                    BackgroundColor="#F5F5F5"
+                                    HeightRequest="160"
+                                    Source="{Binding ImageUrl}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    HorizontalTextAlignment="Center"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Name}"
+                                    TextColor="#2C3E50" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalTextAlignment="Center"
+                                    LineBreakMode="WordWrap"
+                                    MaxLines="2"
+                                    Text="{Binding Description}"
+                                    TextColor="#7F8C8D" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding Price, StringFormat='${0:F2}'}"
+                                    TextColor="#E74C3C" />
+
+                                <HorizontalStackLayout
+                                    Padding="5"
+                                    BackgroundColor="#F8F9FA"
+                                    HorizontalOptions="Center"
+                                    Spacing="15"
+                                    VerticalOptions="Center">
+
+                                    <Button
+                                        BackgroundColor="#E74C3C"
+                                        Command="{Binding DecreaseCommand}"
+                                        CornerRadius="20"
+                                        FontSize="18"
+                                        HeightRequest="40"
+                                        Text="−"
+                                        TextColor="White"
+                                        WidthRequest="40" />
+
+                                    <Entry
+                                        Margin="0"
+                                        BackgroundColor="Transparent"
+                                        FontAttributes="Bold"
+                                        FontSize="16"
+                                        HorizontalTextAlignment="Center"
+                                        Keyboard="Numeric"
+                                        Text="{Binding Quantity, Mode=TwoWay}"
+                                        TextColor="#2C3E50"
+                                        VerticalTextAlignment="Center"
+                                        WidthRequest="40" />
+
+
+                                    <Button
+                                        BackgroundColor="#27AE60"
+                                        Command="{Binding IncreaseCommand}"
+                                        CornerRadius="20"
+                                        FontSize="18"
+                                        HeightRequest="40"
+                                        Text="+"
+                                        TextColor="White"
+                                        WidthRequest="40" />
+                                </HorizontalStackLayout>
+
+                            </StackLayout>
+                        </DataTemplate>
+                    </syncfusion:SfCarousel.ItemTemplate>
+                </syncfusion:SfCarousel>
+
+                <!--  Selected Products List  -->
+                <CollectionView
+                    ItemsLayout="VerticalList"
+                    ItemsSource="{Binding SelectedProducts}"
+                    SelectionMode="None"
+                    VerticalOptions="Start">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Margin="0,5"
+                                Padding="10"
+                                BackgroundColor="White"
+                                CornerRadius="12"
+                                HasShadow="True">
+
+                                <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Center">
+                                    <!--  Product Name  -->
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        Text="{Binding Name}"
+                                        TextColor="#2C3E50"
+                                        VerticalOptions="Center" />
+
+                                    <!--  Quantity  -->
+                                    <Label
+                                        Grid.Column="1"
+                                        Margin="10,0"
+                                        Padding="5"
+                                        BackgroundColor="AliceBlue"
+                                        FontSize="12"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Quantity}"
+                                        TextColor="#2C3E50"
+                                        VerticalOptions="Center" />
+
+                                    <!--  Total Price for this item  -->
+                                    <Label
+                                        Grid.Column="2"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        HorizontalOptions="End"
+                                        Text="{Binding Price, StringFormat='${0:F2}'}"
+                                        TextColor="#27AE60"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Footer: Save Order + Total  -->
+        <Frame
+            Grid.Row="2"
+            Margin="0,20,0,0"
+            Padding="20,15"
+            BackgroundColor="White"
+            CornerRadius="16"
+            HasShadow="True">
+
+            <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                <!--  Save Order Button  -->
+                <Button
+                    BackgroundColor="#27AE60"
+                    Command="{Binding CreateOrderCommand}"
+                    CornerRadius="12"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="45"
+                    HorizontalOptions="Start"
+                    IsEnabled="{Binding CanCreateOrder}"
+                    Text="Save Order"
+                    TextColor="White"
+                    WidthRequest="120" />
+
+                <!--  Total Price  -->
+                <StackLayout
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    Orientation="Horizontal"
+                    VerticalOptions="Center">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Total:"
+                        TextColor="#2C3E50" />
+                    <Label
+                        Margin="8,0,0,0"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="{Binding TotalPrice, StringFormat='${0:F2}'}"
+                        TextColor="#27AE60" />
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+    </Grid>
+</ContentPage>

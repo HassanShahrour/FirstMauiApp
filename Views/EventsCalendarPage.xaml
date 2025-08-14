@@ -1,0 +1,372 @@
+﻿<ContentPage
+    x:Class="BMB.Views.EventsCalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:BMB.Data.Models"
+    xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+    xmlns:viewmodels="clr-namespace:BMB.ViewModels"
+    x:DataType="viewmodels:EventsCalendarViewModel"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--  Modern Event Card Style  -->
+            <Style x:Key="ModernEventCard" TargetType="Frame">
+                <Setter Property="Padding" Value="16,12" />
+                <Setter Property="Margin" Value="16,0,16,12" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="BorderColor" Value="Transparent" />
+            </Style>
+
+            <!--  Header Label Style  -->
+            <Style x:Key="HeaderLabel" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="Margin" Value="16,24,16,16" />
+            </Style>
+
+            <!--  Event Type Label Style  -->
+            <Style x:Key="EventTypeLabel" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Padding" Value="8,4" />
+                <Setter Property="Margin" Value="0,0,0,8" />
+            </Style>
+
+            <!--  Event Description Style  -->
+            <Style x:Key="EventDescriptionLabel" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="TextColor" Value="#2D3748" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="Margin" Value="0,0,0,4" />
+            </Style>
+
+            <!--  Event Date Style  -->
+            <Style x:Key="EventDateLabel" TargetType="Label">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TextColor" Value="#718096" />
+            </Style>
+
+            <!--  FAB Style  -->
+            <Style x:Key="FabStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#667EEA" />
+                <Setter Property="CornerRadius" Value="28" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="HeightRequest" Value="56" />
+                <Setter Property="WidthRequest" Value="56" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+            <!--  Modern Input Style  -->
+            <Style x:Key="ModernEntry" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="#F7FAFC" />
+                <Setter Property="TextColor" Value="#2D3748" />
+                <Setter Property="PlaceholderColor" Value="#A0AEC0" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
+
+            <!--  Modern Picker Style  -->
+            <Style x:Key="ModernPicker" TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="#F7FAFC" />
+                <Setter Property="TextColor" Value="#2D3748" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
+
+            <!--  Modern Button Style  -->
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#667EEA" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
+
+            <Style x:Key="SecondaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#E2E8F0" />
+                <Setter Property="TextColor" Value="#4A5568" />
+                <Setter Property="FontFamily" Value="OpenSansSemibold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="HeightRequest" Value="48" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Main Scrollable Content  -->
+        <ScrollView Grid.Row="0" Padding="0">
+            <VerticalStackLayout Spacing="0">
+
+                <!--  Calendar Section  -->
+                <Frame
+                    Margin="0,0,0,8"
+                    Padding="16,20,16,24"
+                    BackgroundColor="White"
+                    CornerRadius="0"
+                    HasShadow="False">
+                    <scheduler:SfScheduler
+                        AppointmentsSource="{Binding Appointments}"
+                        BackgroundColor="Transparent"
+                        HeightRequest="500"
+                        SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                        View="Month">
+                        <scheduler:SfScheduler.MonthView>
+                            <scheduler:SchedulerMonthView AppointmentDisplayMode="Indicator" AppointmentIndicatorCount="3" />
+                        </scheduler:SfScheduler.MonthView>
+                    </scheduler:SfScheduler>
+                </Frame>
+
+                <!--  Events Section  -->
+                <VerticalStackLayout Spacing="0">
+                    <Label Style="{StaticResource HeaderLabel}" Text="Events for Selected Date" />
+
+                    <!--  Events List  -->
+                    <StackLayout x:Name="EventsContainer" Spacing="0">
+                        <CollectionView BackgroundColor="Transparent" ItemsSource="{Binding EventsForSelectedDate}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:EventItem">
+                                    <Frame Style="{StaticResource ModernEventCard}">
+                                        <Frame.Shadow>
+                                            <Shadow
+                                                Brush="#E2E8F0"
+                                                Opacity="0.3"
+                                                Radius="8"
+                                                Offset="0,2" />
+                                        </Frame.Shadow>
+
+                                        <VerticalStackLayout Spacing="0">
+                                            <!--  Event Type Badge  -->
+                                            <Frame
+                                                Margin="0,0,0,12"
+                                                Padding="8,4"
+                                                BackgroundColor="{Binding ColorCode}"
+                                                CornerRadius="4"
+                                                HasShadow="False"
+                                                HorizontalOptions="Start">
+                                                <Label
+                                                    FontFamily="OpenSansSemibold"
+                                                    FontSize="12"
+                                                    Text="{Binding Type}"
+                                                    TextColor="White" />
+                                            </Frame>
+
+                                            <!--  Event Description  -->
+                                            <Label Style="{StaticResource EventDescriptionLabel}" Text="{Binding Description}" />
+
+                                            <!--  Event Date/Time  -->
+                                            <HorizontalStackLayout Margin="0,8,0,0" Spacing="8">
+                                                <Label FontSize="16" Text="📅" />
+                                                <Label Style="{StaticResource EventDateLabel}" Text="{Binding Date, StringFormat='{}{0:MMM dd, yyyy}'}" />
+                                                <Label
+                                                    Margin="16,0,0,0"
+                                                    FontSize="16"
+                                                    Text="🕒" />
+                                                <Label Style="{StaticResource EventDateLabel}" Text="{Binding Date, StringFormat='{}{0:hh\\:mm tt}'}" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+                    <!--  Empty State  -->
+                    <VerticalStackLayout
+                        Margin="32,40"
+                        HorizontalOptions="Center"
+                        Spacing="16">
+
+                        <Label
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="Tap the + button to add an event"
+                            TextColor="#CBD5E0" />
+                    </VerticalStackLayout>
+
+                    <!--  Bottom spacing for FAB  -->
+                    <BoxView BackgroundColor="Transparent" HeightRequest="100" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Floating Action Button  -->
+        <Frame
+            x:Name="FabFrame"
+            Margin="20"
+            Padding="0"
+            BackgroundColor="DodgerBlue"
+            CornerRadius="30"
+            HasShadow="True"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            WidthRequest="60">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnFabTapped" />
+            </Frame.GestureRecognizers>
+            <Label
+                FontSize="30"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="+"
+                TextColor="White"
+                VerticalOptions="Center"
+                VerticalTextAlignment="Center" />
+        </Frame>
+
+        <!--  Modern Popup Overlay  -->
+        <Grid
+            x:Name="PopupOverlay"
+            BackgroundColor="#CC000000"
+            IsVisible="False">
+            <Frame
+                Margin="24"
+                Padding="24"
+                BackgroundColor="White"
+                CornerRadius="16"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                MaximumWidthRequest="400"
+                VerticalOptions="Center">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.15"
+                        Radius="24"
+                        Offset="0,8" />
+                </Frame.Shadow>
+
+                <ScrollView MaximumHeightRequest="500">
+                    <VerticalStackLayout Spacing="20">
+                        <!--  Header  -->
+                        <VerticalStackLayout Spacing="4">
+                            <Label
+                                FontFamily="OpenSansSemibold"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="Create New Event"
+                                TextColor="#1A1A1A" />
+                            <Label
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="Fill in the details below"
+                                TextColor="#718096" />
+                        </VerticalStackLayout>
+
+                        <!--  Form Fields  -->
+                        <VerticalStackLayout Spacing="16">
+                            <!--  Description  -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    Text="Event Description"
+                                    TextColor="#4A5568" />
+                                <Frame
+                                    Padding="12"
+                                    BackgroundColor="#F7FAFC"
+                                    CornerRadius="8"
+                                    HasShadow="False">
+                                    <Entry
+                                        x:Name="DescriptionEntry"
+                                        BackgroundColor="Transparent"
+                                        Placeholder="What's happening?"
+                                        PlaceholderColor="#A0AEC0"
+                                        Text="{Binding Description}"
+                                        TextColor="#2D3748" />
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <!--  Event Type  -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label
+                                    FontFamily="OpenSansSemibold"
+                                    FontSize="14"
+                                    Text="Event Type"
+                                    TextColor="#4A5568" />
+                                <Frame
+                                    Padding="12"
+                                    BackgroundColor="#F7FAFC"
+                                    CornerRadius="8"
+                                    HasShadow="False">
+                                    <Picker
+                                        Title="Choose a type"
+                                        BackgroundColor="Transparent"
+                                        ItemsSource="{Binding Types}"
+                                        SelectedItem="{Binding SelectedType}"
+                                        TextColor="#2D3748" />
+                                </Frame>
+                            </VerticalStackLayout>
+
+                            <!--  Date and Time  -->
+                            <HorizontalStackLayout Spacing="12">
+                                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="8">
+                                    <Label
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="14"
+                                        Text="Date"
+                                        TextColor="#4A5568" />
+                                    <Frame
+                                        Padding="12"
+                                        BackgroundColor="#F7FAFC"
+                                        CornerRadius="8"
+                                        HasShadow="False">
+                                        <DatePicker
+                                            x:Name="DateEntry"
+                                            BackgroundColor="Transparent"
+                                            Date="{Binding Date, Mode=TwoWay}"
+                                            TextColor="#2D3748" />
+                                    </Frame>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout HorizontalOptions="FillAndExpand" Spacing="8">
+                                    <Label
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="14"
+                                        Text="Time"
+                                        TextColor="#4A5568" />
+                                    <Frame
+                                        Padding="12"
+                                        BackgroundColor="#F7FAFC"
+                                        CornerRadius="8"
+                                        HasShadow="False">
+                                        <TimePicker
+                                            BackgroundColor="Transparent"
+                                            TextColor="#2D3748"
+                                            Time="{Binding Time, Mode=TwoWay}" />
+                                    </Frame>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!--  Action Buttons  -->
+                        <HorizontalStackLayout Margin="0,8,0,0" Spacing="12">
+                            <Button
+                                Clicked="OnCancelClicked"
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource SecondaryButton}"
+                                Text="Cancel" />
+                            <Button
+                                Clicked="OnAddEventClicked"
+                                Command="{Binding AddEventCommand}"
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource PrimaryButton}"
+                                Text="Create Event" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>

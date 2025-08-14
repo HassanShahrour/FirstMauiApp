@@ -1,0 +1,117 @@
+<ContentPage
+    x:Class="BMB.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:utils="clr-namespace:BMB.Utilities"
+    xmlns:viewmodels="clr-namespace:BMB.ViewModels"
+    Title="Login"
+    BackgroundColor="White">
+
+    <Grid>
+
+        <Grid
+            Padding="30"
+            HorizontalOptions="Center"
+            RowDefinitions="Auto, *"
+            VerticalOptions="Center">
+
+            <Button
+                Grid.Row="0"
+                BackgroundColor="Transparent"
+                Clicked="OnLanguageToggleClicked"
+                FontAttributes="Bold"
+                HorizontalOptions="End"
+                Text="{utils:TranslateUtility Switch}"
+                TextColor="#0057D9" />
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                Margin="10"
+                Padding="30"
+                HorizontalOptions="Center"
+                Spacing="25"
+                VerticalOptions="Center"
+                WidthRequest="320">
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    Text="{utils:TranslateUtility Welcome}"
+                    TextColor="#333" />
+
+                <Frame
+                    Padding="5"
+                    BackgroundColor="#f0f1f5"
+                    CornerRadius="8"
+                    HasShadow="False">
+                    <Entry
+                        BackgroundColor="#f0f1f5"
+                        ClearButtonVisibility="WhileEditing"
+                        HeightRequest="50"
+                        Keyboard="Email"
+                        Placeholder="{utils:TranslateUtility Email}"
+                        PlaceholderColor="#999"
+                        Text="{Binding Email}"
+                        TextColor="#222" />
+                </Frame>
+
+                <Frame
+                    Padding="5"
+                    BackgroundColor="#f0f1f5"
+                    CornerRadius="8"
+                    HasShadow="False">
+                    <Entry
+                        BackgroundColor="#f0f1f5"
+                        ClearButtonVisibility="WhileEditing"
+                        HeightRequest="50"
+                        IsPassword="True"
+                        Placeholder="{utils:TranslateUtility Password}"
+                        PlaceholderColor="#999"
+                        Text="{Binding Password}"
+                        TextColor="#222" />
+                </Frame>
+
+                <Button
+                    BackgroundColor="#0057D9"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    Text="{utils:TranslateUtility Login}"
+                    TextColor="White" />
+
+                <Button
+                    BackgroundColor="#0057D9"
+                    Command="{Binding LoginWithBiometricsCommand}"
+                    CornerRadius="8"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    Text="{utils:TranslateUtility LoginWithFingerprint}"
+                    TextColor="White" />
+
+                <Label
+                    FontAttributes="Italic"
+                    HorizontalOptions="Center"
+                    Text="{utils:TranslateUtility RegisterPrompt}"
+                    TextColor="#0057D9">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+        </Grid>
+
+
+        <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                VerticalOptions="Center"
+                WidthRequest="50"
+                Color="White" />
+        </Grid>
+    </Grid>
+</ContentPage>

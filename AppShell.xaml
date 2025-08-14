@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell
+    x:Class="BMB.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BMB.Views"
+    xmlns:utilities="clr-namespace:BMB.Utilities"
+    Title="BMB"
+    FlyoutBehavior="Flyout">
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <StackLayout
+                xmlns:local="clr-namespace:BMB.Utilities"
+                Padding="10"
+                BindingContext="{x:Static utilities:ThemeUtility.Current}"
+                HorizontalOptions="Center"
+                Orientation="Horizontal">
+                <Label Text="Dark Mode" VerticalOptions="Center" />
+                <Switch
+                    Margin="10,0,0,0"
+                    IsToggled="{Binding IsDarkMode}"
+                    VerticalOptions="Center" />
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+
+
+    <FlyoutItem Title="Main Menu" FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent
+            Title="Orders"
+            ContentTemplate="{DataTemplate local:OrderListPage}"
+            Route="Orders" />
+
+        <ShellContent
+            Title="Clients"
+            ContentTemplate="{DataTemplate local:ClientsPage}"
+            Route="Clients" />
+
+        <ShellContent
+            Title="Products"
+            ContentTemplate="{DataTemplate local:ProductPage}"
+            Route="Products" />
+
+        <ShellContent
+            Title="Events"
+            ContentTemplate="{DataTemplate local:EventsCalendarPage}"
+            Route="Events" />
+
+        <ShellContent
+            Title="CountrySelection"
+            ContentTemplate="{DataTemplate local:CountrySelectionPage}"
+            Route="CountrySelection" />
+
+        <ShellContent
+            Title="Picker"
+            ContentTemplate="{DataTemplate local:PickerPage}"
+            Route="Picker" />
+
+        <ShellContent Title="Logout" Route="Logout" />
+    </FlyoutItem>
+
+</Shell>

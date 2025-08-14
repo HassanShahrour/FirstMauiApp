@@ -1,0 +1,10 @@
+<ContentPage
+    x:Class="BMB.Views.SplashPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="White">
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <ActivityIndicator IsRunning="True" />
+        <Label Text="Loading..." />
+    </StackLayout>
+</ContentPage>

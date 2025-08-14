@@ -1,0 +1,155 @@
+<ContentPage
+    x:Class="BMB.Views.ClientsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:BMB.ViewModels"
+    Title="Clients"
+    BackgroundColor="{DynamicResource PrimaryBackgroundColor}">
+
+    <Grid>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="10">
+                <CollectionView ItemsSource="{Binding Clients}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Margin="5"
+                                Padding="15"
+                                BackgroundColor="White"
+                                BorderColor="#cccccc"
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <StackLayout Spacing="6">
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Name:"
+                                            TextColor="Black" />
+                                        <Label
+                                            Margin="5,0,0,0"
+                                            FontSize="14"
+                                            Text="{Binding FullName}"
+                                            TextColor="Black" />
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Phone:"
+                                            TextColor="Black" />
+                                        <Label
+                                            Margin="5,0,0,0"
+                                            FontSize="14"
+                                            Text="{Binding PhoneNumber}"
+                                            TextColor="Black" />
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Address:"
+                                            TextColor="Black" />
+                                        <Label
+                                            Margin="5,0,0,0"
+                                            FontSize="14"
+                                            Text="{Binding Address}"
+                                            TextColor="Black" />
+                                    </StackLayout>
+
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+
+        <Frame
+            x:Name="FabFrame"
+            Margin="20"
+            Padding="0"
+            BackgroundColor="DodgerBlue"
+            CornerRadius="30"
+            HasShadow="True"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            WidthRequest="60">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnFabTapped" />
+            </Frame.GestureRecognizers>
+            <Label
+                FontSize="30"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="+"
+                TextColor="White"
+                VerticalOptions="Center"
+                VerticalTextAlignment="Center" />
+        </Frame>
+
+        <Grid
+            x:Name="PopupOverlay"
+            BackgroundColor="#80000000"
+            IsVisible="False">
+            <Frame
+                Margin="20"
+                Padding="20"
+                BackgroundColor="White"
+                CornerRadius="10"
+                HasShadow="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <StackLayout Spacing="15">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Add New Client"
+                        TextColor="Black" />
+
+                    <Entry
+                        x:Name="NameEntry"
+                        Placeholder="Name"
+                        Text="{Binding Name}"
+                        TextColor="Black" />
+
+                    <Entry
+                        x:Name="PhoneEntry"
+                        Keyboard="Telephone"
+                        Placeholder="Phone"
+                        Text="{Binding Phone}"
+                        TextColor="Black" />
+
+                    <Entry
+                        x:Name="AddressEntry"
+                        Placeholder="Address"
+                        Text="{Binding Address}"
+                        TextColor="Black" />
+
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Button
+                            BackgroundColor="LightGray"
+                            Clicked="OnCancelClicked"
+                            Command="{Binding CancelCommand}"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Cancel"
+                            TextColor="Black" />
+
+                        <Button
+                            BackgroundColor="DodgerBlue"
+                            Clicked="OnAddClientClicked"
+                            Command="{Binding AddClientCommand}"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Add Client"
+                            TextColor="White" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>
